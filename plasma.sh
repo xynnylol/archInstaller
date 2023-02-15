@@ -194,7 +194,7 @@ pacman-key --populate
 echo "y" | pacman -Sy archlinux-keyring;
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime;
 hwclock --systohc;
-#sed /etc/locale.gen;
+echo "$locale UTF-8" >> /etc/locale.gen;
 locale-gen;
 echo "$hostname" > /etc/hostname;
 systemctl enable NetworkManager;
