@@ -18,12 +18,27 @@ echo -n "* Choose ROOT ACCOUNT password (Should be different from user): " && re
 echo -n "* Do you want to make your user an administrator (yes/no): " && read useradminyn;
 
 # Prompt for locale, timezone, hostname
-echo "";
+promptSysInfo(){
+echo -e "\nYou can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List\n\nYou can find your locale here: https://saimana.com/list-of-country-locale-code\n";
 echo -n "* Please type your timezone (Case senitive) (Example: Europe/London): " && read timezone;
+if [ ! -f "/usr/share/zoneinfo/" ];then
+echo "* Invalid timezone, You can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List";
+echo "";
+promptSysInfo;
+return;
+fi;
 echo -n "* Please type your locale (Case sensitive) (Example: en-GB): " && read locale;
+if [ ! -f "/usr/share/zoneinfo/" ];then
+echo "* Invalid timezone, You can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List";
+echo "";
+promptSysInfo;
+return;
+fi;
 echo -n "* Please type the name for this pc: " && read hostname;
 echo -n "* Is your pc legacy (BIOS) or UEFI ? (legacy/uefi): " && read boottype;
 echo -n "* Is your pc MBR or GPT ? (gpt/mbr): " && read disktype;
+};
+promptSysInfo;
 
 # Final confirmation
 echo "";
