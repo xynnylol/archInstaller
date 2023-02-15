@@ -200,3 +200,28 @@ echo "$hostname" > /etc/hostname;
 systemctl enable NetworkManager;
 systemctl enable sddm;
 ( echo "$rootpass"; echo "$rootpass"; ) | passwd;
+if [ "$useradminyn" = "yes" ]; then
+useradd -m "$username" -G wheel,optical,disk,storage;
+else
+useradd -m "$username" -G optical,disk,storage;
+fi;
+( echo "$userpass"; echo "$userpass" ) | passwd "$username";
+echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers;
+mkinitcpio -P
+
+# Install bootloader
+echo "* Installing bootloader";
+if [ "$disktype" = "mbr" ]; then
+echo "y" | pacman -Sy syslinux;
+syslinux-install_update -i -a -m &&mkinitcpio -P;
+else
+echo "y" | pacman -Sy efibootmgr grub;
+grub-install "/dev/$disk";
+grub-mkconfig -o /boot/grub/grub.cfg;
+mkinitcpio -P;
+fi;
+
+# Unmount all partitions
+umount -a;
+echo -n "* Install success press enter to reboot " && read;
+reboot;
