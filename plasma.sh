@@ -27,7 +27,7 @@ echo -n "* Is your pc MBR or GPT ? (gpt/mbr): " && read disktype;
 
 # Final confirmation
 echo "";
-echo -n "LAST CHANCE. Do you wish to install arch linux (Desktop: Plasma X11) onto disk $disk\n\nPlease type 'CONFIRM' to proceed: " && read yn;
+echo -en "LAST CHANCE. Do you wish to install arch linux (Desktop: Plasma X11) onto disk $disk\n\nPlease type 'CONFIRM' to proceed: " && read yn;
 if [ "$yn" != "CONFIRM" ]; then
 exit;
 fi;
