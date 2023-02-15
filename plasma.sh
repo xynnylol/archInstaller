@@ -2,6 +2,7 @@
 
 # Prompt for disk
 clear;
+echo -e "* Warning: You WILL NEED a working internet conenction\n";
 echo -e "* Please type the name (example: sda) of the disk you want to use (THIS WILL ERASE ALL CONTENTS)\n" && 
 lsblk -a;
 echo -n "* Disk name: " && read disk;
@@ -21,19 +22,13 @@ echo -n "* Do you want to make your user an administrator (yes/no): " && read us
 promptSysInfo(){
 echo -e "\nYou can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List\n\nYou can find your locale here: https://saimana.com/list-of-country-locale-code\n";
 echo -n "* Please type your timezone (Case senitive) (Example: Europe/London): " && read timezone;
-if [ ! -f "/usr/share/zoneinfo/" ];then
+if [ ! -f "/usr/share/zoneinfo/$timezone" ];then
 echo "* Invalid timezone, You can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List";
 echo "";
 promptSysInfo;
 return;
 fi;
 echo -n "* Please type your locale (Case sensitive) (Example: en-GB): " && read locale;
-if [ ! -f "/usr/share/zoneinfo/" ];then
-echo "* Invalid timezone, You can find timezone here: https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones#List";
-echo "";
-promptSysInfo;
-return;
-fi;
 echo -n "* Please type the name for this pc: " && read hostname;
 echo -n "* Is your pc legacy (BIOS) or UEFI ? (legacy/uefi): " && read boottype;
 echo -n "* Is your pc MBR or GPT ? (gpt/mbr): " && read disktype;
@@ -52,6 +47,7 @@ clear;
 echo -e "* Starting installation, This may take a while\n";
 
 # Create partiton table
+echo "* Creating partitions";
 if [ "$disktype" = "mbr" ]; then
 fdisk "/dev/$disk" <<EEOF
 d
@@ -182,3 +178,25 @@ fi;
 fi;
 
 # Install base system
+echo "* Installing arch linux";
+pacman-key --init;
+pacman-key --populate;
+echo "y" | pacman -Sy archlinux-keyring;
+pacstrap base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
+pacstrap -K /mnt;
+genfstab -U /mnt >> /mnt/etc/fstab;
+arch-chroot /mnt;
+
+# Configure
+echo "* Configuring system";
+pacman-key --init
+pacman-key --populate
+echo "y" | pacman -Sy archlinux-keyring;
+ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime;
+hwclock --systohc;
+#sed /etc/locale.gen;
+locale-gen;
+echo "$hostname" > /etc/hostname;
+systemctl enable NetworkManager;
+systemctl enable sddm;
+( echo "$rootpass"; echo "$rootpass"; ) | passwd;
