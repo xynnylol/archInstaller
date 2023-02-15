@@ -50,3 +50,83 @@ clear;
 
 # Start installing
 echo -e "* Starting installation, This may take a while\n";
+
+# Create partiton table
+if [ "$disktype" = "mbr" ]; then
+fdisk "/dev/$disk" <<EEOF
+d
+w
+EEOF
+else
+fdisk "/dev/$disk" <<EEOF
+g
+w
+EEOF
+fi;
+
+# Create partitions
+if [ "$boottype" = "uefi" ]; then
+if [ "$disktype" = "mbr" ]; then
+fdisk "/dev/$disk" <<EEOF
+d
+w
+EEOF
+else
+fdisk "/dev/$disk" <<EEOF
+n
+
+
++512M
+
+
+n
+
+
+
+
+
+t
+1
+1
+
+w
+EEOF
+fi;
+else
+if [ "$disktype" = "mbr" ]; then
+fdisk "/dev/$disk" <<EEOF
+d
+w
+EEOF
+else
+fdisk "/dev/$disk" <<EEOF
+n
+
+
++1M
+
+
+n
+
+
++512M
+
+
+n
+
+
+
+
+
+t
+1
+4
+
+t
+2
+1
+
+w
+EEOF
+fi;
+fi;
