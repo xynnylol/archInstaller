@@ -185,7 +185,7 @@ echo "y" | pacman -Sy archlinux-keyring;
 pacstrap base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
 pacstrap -K /mnt;
 genfstab -U /mnt >> /mnt/etc/fstab;
-arch-chroot /mnt >>EEOF
+arch-chroot /mnt <<EEOF
 
 # Configure
 echo "* Configuring system";
@@ -213,7 +213,8 @@ mkinitcpio -P
 echo "* Installing bootloader";
 if [ "$disktype" = "mbr" ]; then
 echo "y" | pacman -Sy syslinux;
-syslinux-install_update -i -a -m &&mkinitcpio -P;
+syslinux-install_update -i -a -m;
+mkinitcpio -P;
 else
 echo "y" | pacman -Sy efibootmgr grub;
 grub-install "/dev/$disk";
