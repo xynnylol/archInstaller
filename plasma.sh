@@ -82,11 +82,11 @@ a
 w
 EEOF
 parted "/dev/$disk" set 1 boot on;
-mkfs.ext4 "/dev/$disk1";
-mkfs.ext4 "/dev/$disk2";
-mount "/dev/$disk2" /mnt;
+mkfs.ext4 "/dev/${disk}1";
+mkfs.ext4 "/dev/${disk}2";
+mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot;
-mount "/dev/$disk1" /mnt/boot;
+mount "/dev/${disk}1" /mnt/boot;
 else
 fdisk "/dev/$disk" <<EEOF
 n
@@ -107,11 +107,11 @@ t
 
 w
 EEOF
-mkfs.fat "/dev/$disk1";
-mkfs.ext4 "/dev/$disk2";
-mount "/dev/$disk2" /mnt;
+mkfs.fat "/dev/${disk}1";
+mkfs.ext4 "/dev/${disk}2";
+mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot/efi;
-mount "/dev/$disk1" /mnt/boot/efi;
+mount "/dev/${disk}1" /mnt/boot/efi;
 fi;
 else
 if [ "$disktype" = "gpt" ]; then
@@ -144,12 +144,11 @@ t
 
 w
 EEOF
-echo "/dev/$disk"
-mkfs.fat "/dev/$disk2";
-mkfs.ext4 "/dev/$disk3";
-mount "/dev/$disk3" /mnt;
+mkfs.fat "/dev/${disk}2";
+mkfs.ext4 "/dev/${disk}3";
+mount "/dev/${disk}3" /mnt;
 mkdir -p /mnt/home /mnt/boot/efi;
-mount "/dev/$disk2" /mnt/boot/efi;
+mount "/dev/${disk}2" /mnt/boot/efi;
 else
 fdisk "/dev/$disk" <<EEOF
 n
@@ -170,11 +169,11 @@ a
 w
 EEOF
 parted "/dev/$disk" set 1 boot on;
-mkfs.ext4 "/dev/$disk1";
-mkfs.ext4 "/dev/$disk2";
-mount "/dev/$disk2" /mnt;
+mkfs.ext4 "/dev/${disk}1";
+mkfs.ext4 "/dev/${disk}2";
+mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot;
-mount "/dev/$disk1" /mnt/boot;
+mount "/dev/${disk}1" /mnt/boot;
 fi;
 fi;
 
