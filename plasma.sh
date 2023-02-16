@@ -82,8 +82,8 @@ a
 w
 EEOF
 parted "/dev/$disk" set 1 boot on;
-echo "y" | mkfs.ext4 "/dev/${disk}1";
-echo "y" | mkfs.ext4 "/dev/${disk}2";
+echo "y" | mkfs.ext4 -L boot "/dev/${disk}1";
+echo "y" | mkfs.ext4 -L root "/dev/${disk}2";
 mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot;
 mount "/dev/${disk}1" /mnt/boot;
@@ -107,8 +107,8 @@ t
 
 w
 EEOF
-mkfs.fat "/dev/${disk}1";
-echo "y" | mkfs.ext4 "/dev/${disk}2";
+mkfs.fat -n BOOT "/dev/${disk}1";
+echo "y" | mkfs.ext4 -L root "/dev/${disk}2";
 mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot/efi;
 mount "/dev/${disk}1" /mnt/boot/efi;
@@ -144,8 +144,8 @@ t
 
 w
 EEOF
-mkfs.fat "/dev/${disk}2";
-echo "y" | mkfs.ext4 "/dev/${disk}3";
+mkfs.fat -n BOOT "/dev/${disk}2";
+echo "y" | mkfs.ext4 -L root "/dev/${disk}3";
 mount "/dev/${disk}3" /mnt;
 mkdir -p /mnt/home /mnt/boot/efi;
 mount "/dev/${disk}2" /mnt/boot/efi;
@@ -169,8 +169,8 @@ a
 w
 EEOF
 parted "/dev/$disk" set 1 boot on;
-echo "y" | mkfs.ext4 "/dev/${disk}1";
-echo "y" | mkfs.ext4 "/dev/${disk}2";
+echo "y" | mkfs.ext4 -L root "/dev/${disk}1";
+echo "y" | mkfs.ext4 -L boot "/dev/${disk}2";
 mount "/dev/${disk}2" /mnt;
 mkdir -p /mnt/home /mnt/boot;
 mount "/dev/${disk}1" /mnt/boot;
@@ -184,7 +184,7 @@ pacman-key --populate;
 echo "y" | pacman -Sy archlinux-keyring;
 #echo -e "\n\n\n\n\n\n\n\n\n\n\n" | pacstrap /mnt base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
 pacstrap -K /mnt;
-genfstab -U /mnt > /mnt/etc/fstab;
+genfstab -L /mnt > /mnt/etc/fstab;
 arch-chroot /mnt <<EEOF
 
 # Configure
@@ -225,7 +225,8 @@ fi;
 EEOF
 
 # Unmount all partitions
-genfstab -U /mnt > /mnt/etc/fstab
+genfstab -L /mnt > /mnt/etc/fstab
 umount -a;
-echo -n "* Install success press enter to reboot " && read;
+echo -n "* Install success";
+sync;
 reboot;
