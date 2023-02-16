@@ -7,5 +7,14 @@ This is the recommended script for most users. It installs kde plasma (Modern an
 Run this (From live cd):
 
 ```
-curl https://raw.githubusercontent.com/xynnylol/archInstaller/main/plasma.sh > plasma.sh && sh plasma.sh
+curl https://raw.githubusercontent.com/xynnylol/archInstaller/main/plasma.sh > install.sh && sh install.sh
+```
+
+# Bare minimum
+This is the recommended script for servers. It installs the bare minimum needed to work. Only has one user by default and comes with a nice big terminal nothing else.
+
+Run this (From live cd):
+
+```
+curl https://raw.githubusercontent.com/xynnylol/archInstaller/main/bareMinimum.sh > install.sh && sh install.sh
 ```
