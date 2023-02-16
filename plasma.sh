@@ -182,7 +182,7 @@ echo "* Installing arch linux";
 pacman-key --init;
 pacman-key --populate;
 echo "y" | pacman -Sy archlinux-keyring;
-echo -e "\n\n\n\n\n\n\n\n\n\n\n" | pacstrap base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
+echo -e "\n\n\n\n\n\n\n\n\n\n\n" | pacstrap /mnt base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
 pacstrap -K /mnt;
 genfstab -U /mnt >> /mnt/etc/fstab;
 arch-chroot /mnt <<EEOF
