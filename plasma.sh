@@ -226,7 +226,8 @@ EEOF
 
 # Unmount all partitions
 genfstab -L /mnt > /mnt/etc/fstab
-umount -a;
-echo -n "* Install success";
 sync;
+umount -a;
+echo -n "* Install success rebooting in 30 seconds";
+sleep 30:
 reboot;
