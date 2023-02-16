@@ -185,7 +185,7 @@ echo "y" | pacman -Sy archlinux-keyring;
 pacstrap base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
 pacstrap -K /mnt;
 genfstab -U /mnt >> /mnt/etc/fstab;
-arch-chroot /mnt;
+arch-chroot /mnt >>EEOF
 
 # Configure
 echo "* Configuring system";
@@ -220,6 +220,7 @@ grub-install "/dev/$disk";
 grub-mkconfig -o /boot/grub/grub.cfg;
 mkinitcpio -P;
 fi;
+EEOF
 
 # Unmount all partitions
 umount -a;
