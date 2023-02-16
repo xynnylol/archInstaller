@@ -144,6 +144,7 @@ t
 
 w
 EEOF
+echo "/dev/$disk"
 mkfs.fat "/dev/$disk2";
 mkfs.ext4 "/dev/$disk3";
 mount "/dev/$disk3" /mnt;
