@@ -192,7 +192,7 @@ echo "* Configuring system";
 pacman-key --init
 pacman-key --populate
 echo "y" | pacman -Sy archlinux-keyring;
-echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n" | pacstrap base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
+echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n" | pacman -Sy base linux linux-headers man-db man-pages texinfo networkmanager git sudo nano curl chromium konsole sddm xorg-server xorg-xrandr dolphin plasma;
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime;
 hwclock --systohc;
 echo "$locale UTF-8" >> /etc/locale.gen;
